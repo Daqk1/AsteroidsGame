@@ -27,7 +27,8 @@ public void keyPressed(){
      ship.setSpeedX(0);
      ship.setSpeedY(0);
      ship.setX(Math.random()*1000);
-     ship.setY(Math.random()*1000);     
+     ship.setY(Math.random()*1000);  
+     ship.getPointDirection(Math.random()*360);
   }
   if(key == 'w'){
     ship.accelerate(10);    

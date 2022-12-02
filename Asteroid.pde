@@ -21,6 +21,9 @@ class Asteroid extends Floater
       myCenterX = Math.random()*1000;
       myCenterY = Math.random()*1000;
       rotSpeed = (Math.random()*10)-5;
+      if(rotSpeed < 1 || rotSpeed > -1){
+        rotSpeed = (Math.random()*10)-5;
+      }
   }
   public void move(){
     myCenterX = myCenterX + rotSpeed;

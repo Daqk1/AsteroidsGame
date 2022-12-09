@@ -1,69 +1,82 @@
 //your variable declarations here
 Spaceship ship = new Spaceship();
 Star [] stars = new Star [1000];
-ArrayList <Asteroid> theMeteor;
-Asteroid meteor = new Asteroid();
-int x = 0;
-int y;
-
-public void setup() 
+ArrayList <Asteroid> theMeteor = new ArrayList <Asteroid>();
+ArrayList<Bullet> gun = new ArrayList <Bullet>();
+float x = 0.3;
+public void setup()
 {
-  size(1000,1000);
-  for(int i = 0; i < stars.length; i++){
+  size(1000, 1000);
+  for (int i = 0; i < stars.length; i++) {
     stars[i] = new Star();
   }
-
-  theMeteor = new ArrayList <Asteroid>();
-  for(int i = 0; i < 20; i++){
+  for (int i = 0; i < 20; i++) {
     theMeteor.add(i, new Asteroid());
   }
-
 }
-public void draw() 
+public void draw()
 {
   background(0);
-  for(int i = 0; i < stars.length; i++){
+  for (int i = 0; i < stars.length; i++) {
     stars[i].show();
   }
-  for(int i = 0; i < theMeteor.size();i++){
-    Asteroid meteor = theMeteor.get(i);
-    meteor.show();
-    meteor.move();
-    float col = dist((float)ship.getX(), (float)ship.getY(),(float) meteor.mX(),(float) meteor.mY());
-   if(col < 50){
-     theMeteor.remove(i);
-     }
+  for (int i = 0; i < gun.size(); i++) {
+    gun.get(i).show();
+    gun.get(i).move();
+    gun.get(i).accelerate(0.5);
   }
+  for (int i = 0; i < theMeteor.size(); i++) {
+    theMeteor.get(i).show();
+    theMeteor.get(i).move();
+    float col = dist((float)ship.getX(), (float)ship.getY(), (float)theMeteor.get(i).mX(), (float)theMeteor.get(i).mY());
+    if (col < 50) {
+      theMeteor.remove(i);
+    }
+  }
+  
+    for (int a = 0; a < gun.size(); a++) {
+      for (int i = 0; i < theMeteor.size(); i++) {
+      if (gun.get(a).gX() > 1000) {
+        gun.remove(a);
+        break;
+      } else if (gun.get(a).gY() > 1000) {
+        gun.remove(a);
+        break;
+      } else if (gun.get(a).gY() < 0) {
+        gun.remove(a);
+        break;
+      } else if (gun.get(a).gX() < 0) {
+        gun.remove(a);
+        break;
+      }
+      if ((dist((float)gun.get(a).gX(), (float)gun.get(a).gY(), (float)theMeteor.get(i).mX(), (float)theMeteor.get(i).mY())) < 10) {
+        theMeteor.remove(i);
+        gun.remove(a);
+        break;
+      }
+    }
+  }
+
   ship.show();
   ship.move();
-  if(y > 0){
-     y--;
-  }
-  if(y == 0){
-   ship.setSpeedX(0);
-   ship.setSpeedY(0);
-   ship.accelerate(0);
- }
 }
 
-public void keyPressed(){
-  if(key == 'h'){
-     ship.setSpeedX(0);
-     ship.setSpeedY(0);
-     ship.setX(Math.random()*1000);
-     ship.setY(Math.random()*1000);  
-     ship.getPointDirection(Math.random()*360);
+public void keyPressed() {
+  if (key == 'h') {
+    ship.setSpeedX(0);
+    ship.setSpeedY(0);
+    ship.setX(Math.random()*1000);
+    ship.setY(Math.random()*1000);
+    ship.getPointDirection(Math.random()*360);
   }
-  if(key == 'w'){
-    y = 20;
-    ship.accelerate(y);
+
+  if (key == 'a') {
+    ship.turn(-15);
+  } else if (key == 'd') {
+    ship.turn(15);
+  } else if (key == 'w') {
+    ship.accelerate(x);
+  } else if (key == ' ') {
+    gun.add(new Bullet(ship));
   }
-  if(key == 'a'){
-    ship.getPointDirection(x);
-    x+=36;
-  }
-  if(key == 'd'){
-    ship.getPointDirection(x);
-    x-=36;
-}
 }

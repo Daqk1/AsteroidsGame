@@ -70,26 +70,13 @@ public void keyPressed() {
     ship.getPointDirection(Math.random()*360);
   }
 
-if( key == 'w' || key == 'W' )
-      {  player.accelerate(0.05); }
-    
-
-      else if( key == 's' || key == 'S')
-      {
-        ship.setDirectionX(0);
-        ship.setDirectionY(0);
-        ship.setPointDirection((int)(Math.random()*360));
-        ship.setX((int)(Math.random()*1080));
-        ship.setY((int)(Math.random()*640+110));
-      }
-      
-      else if( key == 'd' || key == 'D')
-      {  ship.rotate(10); }
-
-
-      else if( key == 'a' || key == 'A')
-      {  ship.rotate(-10); }
-    }else if (key == ' ') {
+ if (key == 'a') {
+    ship.turn(-15);
+  } else if (key == 'd') {
+    ship.turn(15);
+  } else if (key == 'w') {
+    ship.accelerate(x);
+  } else if (key == ' ') {
     gun.add(new Bullet(ship));
   }
 }
